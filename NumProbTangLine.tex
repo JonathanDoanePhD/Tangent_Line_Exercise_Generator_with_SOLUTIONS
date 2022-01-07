@@ -1,0 +1,400 @@
+\documentclass[ebook,12pt,oneside,openany]{memoir} %ebook format
+\usepackage[T1]{fontenc} %Font adjustment
+\usepackage{MnSymbol, fullpage, adjustbox, fancyhdr, array} %Symbols, page format, \maxsizebox, custom page numbering, custom width (centered) columns
+\renewcommand{\headrulewidth}{0pt} %FANCYHDR Eliminates line from header
+\cfoot{\thepage$^{\prime}$} %FANCYHDR Custom page numbering
+\newcommand{\PreserveBackslash}[1]{\let\temp=\\#1\let\\=\temp} %ARRAY
+\newcolumntype{C}[1]{>{\PreserveBackslash\centering}p{#1}} %ARRAY
+\setlength{\parindent}{0pt} %No indent
+%To use python within LaTeX; pyfuture allows me to use Python 3.9.  
+\usepackage{pythontex}[pyfuture=all]
+%NOTE: My command propmt directory has preloaded path to the folder which this document.tex resides.
+%Compiling my LaTeX document adjusts all LaTeX info, and logs the Python commands I want to use > From the command propmt, I run ``python pythontex.py DOCUMENT NAME'' in order to prepare the Python code for my LaTeX > Compiling my LaTeX documents utilizes the prepared Python code for use in my PDF!
+\begin{document}
+\begin{sympycode}
+
+################################################
+#QUICK START:  Here are the only options you'll need to customize the generated document! 
+
+
+#How many problems do you want?  (Set NumProb > 4)
+
+NumProb=104
+
+
+#For anew problem set, add a hashtag to the Version Number, below!
+#Then recompile LaTeX > Python > LaTeX
+
+#Version Number:
+
+#1 #2 
+
+#END OF QUICK START
+################################################
+
+
+
+
+
+print(r'\title{{\Huge \textbf{', NumProb, r'}} \\ \textbf{Tangent Line Exercises}\\ \large\textit{\textbf{(With SOLUTIONS!)}}}')
+print(r'\author{Jonathan D.\ Doane\\ Calc.\ 1}')
+
+\end{sympycode}
+
+%Here is my phython compile command for my command prompt; see \usepackage{pythontex}.
+%I will put this command throughout my document for convenience.
+
+%python pythontex.py NumProbTangLine
+
+
+%Here is a list of lengths I can adjust.  Putting these commands in my python code allows me to re-compile my document without the command propmt!
+
+\def\OutColWidthSml{.3in}
+\def\OutColWidthSml{.28in}
+\def\OutColWidthMed{.7in}
+\def\InColWidthMed{.68in}
+\def\OutColWidthBig{1.1in}
+\def\InColWidthBig{1in}
+\def\ColHeight{15pt}
+
+
+%Print my title
+
+\maketitle
+
+
+%Finish my cover with a preview.  
+
+\vfill
+
+{\large \textbf{Preview}}
+
+
+%In order to have material TO preview, I must run some Python code to MAKE some material!
+%Sympy in order to have sin, pi, and sin(pi)=0; etc.
+
+\begin{sympycode}
+
+
+
+
+
+
+
+
+
+
+
+#Can get random.choice element from given list.
+
+import random
+
+
+#Allow x to be used by sympy as a variable.
+
+var('x')
+
+
+#My functions; I want my exercises to be relatively simple.  We'll add (x+y)**z to it, soon!
+
+funcs = [sin(x), cos(x), tan(x)]
+
+
+#To store our results
+
+F=[]
+D=[]
+A=[]
+M=[]
+Y=[]
+T=[]
+
+
+#Let's make some problems!  
+
+for func in range(NumProb):
+
+
+#Store the index func as i
+
+	i=func 
+
+
+#We're adding two (x+y)**z so we don't get an overwhelming number of trig problems! 
+
+	y=int(random.choice(range(-10,10,1)))
+	yy=int(random.choice(range(-10,10,1)))
+	z=int(random.choice([-2,-1,1,2]))
+	zz=int(random.choice([-2,-1,1,2]))
+	funcs.append((x+y)**z)
+	funcs.append((x+yy)**zz)  
+
+
+#We'll make one hundred problems randomly, and four additional specific problems (to display my four types of functions in the Preview on my cover)!
+
+	func=random.choice(funcs)
+	while i==(NumProb-4) and func!=cos(x):
+			func=random.choice(funcs)
+	while i==(NumProb-3) and func!=(x+y)**z:
+		func=random.choice(funcs)
+	while i==(NumProb-2) and func!=sin(x):
+		func=random.choice(funcs)
+	while i==(NumProb-1) and func!=tan(x):
+		func=random.choice(funcs)
+
+
+#We want nice numbers for our trig functions; e.g. tan(pi/2) isn't defined, and sin(1) would be terrible!
+
+	if func==tan(x):
+		func=y*func
+
+
+#Sympy wants the derivative of tan(x) to be tan(x)**2+1; let's fix that!
+
+		dfunc=y*(sec(x)**2)
+		a=random.choice([-2*pi, -pi,0,pi,2*pi, pi/3, (2*pi)/3, pi/6, -pi/3, -pi/6, (-2*pi)/3])
+
+
+#We want to record that the numbers involved with trig functions are typically NOT RATIONAL, e.g. sin(pi/3)=sqrt(3)/2.
+
+		RatValid=False
+	elif func==sin(x) or func==cos(x):
+		func=zz*func
+		dfunc=diff(func,x)
+		a=random.choice([-2*pi, (-3*pi)/4, (-pi)/2, (-pi)/4, -pi,0,pi,2*pi, (3*pi)/4, (pi)/2, (pi)/4, pi/3, -pi/3, pi/6, -pi/6, (-2*pi)/3, (2*pi)/3])
+		RatValid=False
+	else:
+		dfunc=diff(func,x)
+		if func==(x+y)**z:
+
+
+#We want answers with short answers; here is some assurance for that!
+
+			a=int(-1*random.choice(range(y-2,y+2,1)))
+			while a==int(-1*y):
+				a=int(-1*random.choice(range(y-2,y+2,1)))
+		else:
+			a=int(-1*random.choice(range(yy-2,yy+2,1)))
+			while a==int(-1*yy):
+				a=int(-1*random.choice(range(yy-2,yy+2,1)))
+
+
+#We want to record that the numbers involved with this function ARE RATIONAL!
+
+		RatValid=True
+
+
+#Now that we've built our material, let's record it!
+
+	A.append(a)
+	F.append(func)
+	D.append(dfunc)
+
+
+#Look, we even get to use our RATIONAL truth values!
+
+	M.append(nsimplify(dfunc.evalf(subs={x: a}), rational=RatValid))
+	Y.append(nsimplify(func.evalf(subs={x: a}), rational=RatValid))
+	T.append(nsimplify(Y[i]+M[i]*(x-a), rational=RatValid))
+
+
+#We remove our two functions so we don't accidentally increase their number!
+
+	funcs.remove((x+y)**z)
+	funcs.remove((x+yy)**zz)
+
+\end{sympycode}
+
+%python pythontex.py NumProbTangLine
+
+
+%Okay, NOW we can build our preview!
+
+\begin{sympycode}
+
+#Using r'MyStuff' allows us to use latex commands; awesome!  This is great, because I was having a tough time trying to get Python to BOLDen my item numbers; I can have LaTeX do it for me, instead!
+
+print(r'\begin{enumerate}')
+
+
+#Let's BOLDen our item numbers, and start our count at 61 for our preview!
+
+print(r'\renewcommand\labelenumi{\bfseries\theenumi.}')
+print(r'\setcounter{enumi}{',(NumProb-4),r'}')
+
+
+#PYTHON will iterate for us, LATEX will print for us!!!
+
+for n in range((NumProb-4),NumProb,1):
+	print(r'\item ')
+	print(r' \begin{tabular}{C{\OutColWidthMed}C{\OutColWidthMed}C{\OutColWidthSml}}')
+
+
+#Be careful to use mathmode around the latex() command.
+
+	print(r'\maxsizebox{\InColWidthMed}{!}{$', latex(F[n]), r'$} & at  $x_1=$ & \maxsizebox{\OutColWidthSml}{!}{$',  latex(A[n]), r'$} \\')
+	print(r'\end{tabular}')
+
+print(r'\end{enumerate}')
+
+
+#Let's add their solutions in a table with custom column widths.
+
+print(r' \begin{tabular}{|C{\OutColWidthSml}|C{\OutColWidthMed}|C{\OutColWidthSml}|C{\OutColWidthSml}|C{\OutColWidthMed}|C{\OutColWidthSml}|C{\OutColWidthBig}|} ')
+print(r' \hline ')
+
+#Using \prime helps us avoid using ' and causing an error!
+
+print(r'    \textbf{n.}    &     $f(x)$      &    $x_1$       &     $y_1$       &     $f^{\prime}(x)$     &     $m$     &  \vphantom{\resizebox{!}{\ColHeight}{$|$}}    tangent line  \vphantom{\resizebox{!}{\ColHeight}{$|$}}  \\ ')
+print(r' \hline ')
+print(r' \hline ')
+
+
+for n in range((NumProb-4),NumProb,1):
+
+	if n!=0 and n % 20 ==19:
+		print(r'\maxsizebox{\OutColWidthSml}{!}{   \textbf{', n+1, r'\hspace*{-.07in}.}   } & \maxsizebox{\InColWidthMed}{!}{   $', latex(F[n]), r'$   } & \maxsizebox{\OutColWidthSml}{!}{  $', latex(A[n]), r'$  } & \maxsizebox{\OutColWidthSml}{!}{  $', latex(Y[n]), r'$  } & \maxsizebox{\InColWidthMed}{!}{   $', latex(D[n]), r'$  } & \maxsizebox{\OutColWidthSml}{!}{  $', latex(M[n]), r'$   } & \vphantom{\resizebox{!}{\ColHeight}{$|$}} \maxsizebox{\InColWidthBig}{!}{     $y=', latex(T[n]), r'$   } \vphantom{\resizebox{!}{\ColHeight}{$|$}} \\ ')
+		print(r' \hline ')
+		print(r'\end{tabular} ')
+		print(r'\newpage ')
+		print(r' \begin{tabular}{|C{\OutColWidthSml}|C{\OutColWidthMed}|C{\OutColWidthSml}|C{\OutColWidthSml}|C{\OutColWidthMed}|C{\OutColWidthSml}|C{\OutColWidthBig}|} ')
+		print(r' \hline ')
+		print(r'    \textbf{n.}    &     $f(x)$      &    $x_1$       &    $y_1$       &     $f^{\prime}(x)$     &     $m$     &  \vphantom{\resizebox{!}{\ColHeight}{$|$}}  tangent line  \vphantom{\resizebox{!}{\ColHeight}{$|$}}  \\ ')
+		print(r' \hline ')
+		print(r' \hline ')
+
+	else:
+		print(r'\maxsizebox{\OutColWidthSml}{!}{   \textbf{', n+1, r'\hspace*{-.07in}.}    } &  \maxsizebox{\InColWidthMed}{!}{   $', latex(F[n]), r'$    }  & \maxsizebox{\OutColWidthSml}{!}{   $', latex(A[n]), r'$    } &  \maxsizebox{\OutColWidthSml}{!}{   $', latex(Y[n]), r'$  } & \maxsizebox{\InColWidthMed}{!}{   $', latex(D[n]), r'$   }  &  \maxsizebox{\OutColWidthSml}{!}{   $', latex(M[n]), r'$   } & \vphantom{\resizebox{!}{\ColHeight}{$|$}} \maxsizebox{\InColWidthBig}{!}{  $y=', latex(T[n]), r'$   } \vphantom{\resizebox{!}{\ColHeight}{$|$}} \\ ')
+		print(r' \hline ')
+
+
+print(r'\end{tabular} ')
+
+\end{sympycode}
+
+%python pythontex.py NumProbTangLine
+
+
+%Eliminate the page number on this cover page!
+
+\thispagestyle{empty}
+
+
+%%%%%%%%%%%%%%%%%%%End Cover
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+
+
+
+
+
+
+
+
+
+
+%Let's start with a fresh page counter!
+
+\clearpage
+\setcounter{page}{1}
+
+
+%We want the directions and first twenty problems to fit on this page.
+
+\vspace*{-.4in}
+
+\resizebox{\linewidth}{!}{Find the equation of the tangent line for each of the following:}
+
+\vspace*{-.1in}
+
+
+%Here we go; let's make all 104 problems!
+
+\begin{sympycode}
+
+print(r'\begin{enumerate}')
+print(r'\renewcommand\labelenumi{\bfseries\theenumi.}')
+print(r'\setcounter{enumi}{0}')
+
+for n in range(NumProb):
+	print(r'\item ')
+	print(r' \begin{tabular}{C{\OutColWidthMed}C{\OutColWidthMed}C{\OutColWidthSml}}')
+	print(r'\maxsizebox{\InColWidthMed}{!}{$', latex(F[n]), r'$} & at  $x_1=$ & \maxsizebox{\OutColWidthSml}{!}{$',  latex(A[n]), r'$} \\')
+	print(r'\end{tabular}')
+
+
+#We can even force page breaks after each set of twenty problems!
+
+	if n % 20 ==19:
+		print(r'\newpage')
+	else:
+		pass
+
+print(r'\end{enumerate}')
+
+\end{sympycode}
+
+%python pythontex.py NumProbTangLine
+
+
+%%%%%%%%%%%%%%%%%%%End Page 4
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+
+
+
+
+
+
+
+
+
+
+%Let's start with a fresh page counter, AND custom label the counter! \usepackage{fancyhdr}
+
+\clearpage
+\setcounter{page}{1}
+\pagestyle{fancy}
+
+
+{\large \textbf{Solutions}}
+
+\bigskip
+
+\begin{sympycode}
+
+
+print(r' \begin{tabular}{|C{\OutColWidthSml}|C{\OutColWidthMed}|C{\OutColWidthSml}|C{\OutColWidthSml}|C{\OutColWidthMed}|C{\OutColWidthSml}|C{\OutColWidthBig}|} ')
+print(r' \hline ')
+print(r'    \textbf{n.}    &     $f(x)$      &    $x_1$       &     $y_1$       &     $f^{\prime}(x)$     &     $m$     &   \vphantom{\resizebox{!}{\ColHeight}{$|$}}   tangent line \vphantom{\resizebox{!}{\ColHeight}{$|$}}   \\ ')
+print(r' \hline ')
+print(r' \hline ')
+
+for n in range(NumProb):
+	if n!=0 and n % 20 ==19:
+		print(r'\maxsizebox{\OutColWidthSml}{!}{   \textbf{', n+1, r'\hspace*{-.07in}.}   } & \maxsizebox{\InColWidthMed}{!}{    $', latex(F[n]), r'$        } & \maxsizebox{\OutColWidthSml}{!}{   $', latex(A[n]), r'$       } & \maxsizebox{\OutColWidthSml}{!}{   $', latex(Y[n]), r'$       } & \maxsizebox{\InColWidthMed}{!}{    $', latex(D[n]), r'$       } & \maxsizebox{\OutColWidthSml}{!}{   $', latex(M[n]), r'$      } & \vphantom{\resizebox{!}{\ColHeight}{$|$}} \maxsizebox{\InColWidthBig}{!}{      $y=', latex(T[n]), r'$   } \vphantom{\resizebox{!}{\ColHeight}{$|$}} \\ ')
+		print(r' \hline ')
+		print(r'\end{tabular} ')
+		print(r'\newpage ')
+		print(r' \begin{tabular}{|C{\OutColWidthSml}|C{\OutColWidthMed}|C{\OutColWidthSml}|C{\OutColWidthSml}|C{\OutColWidthMed}|C{\OutColWidthSml}|C{\OutColWidthBig}|} ')
+		print(r' \hline ')
+		print(r'    \textbf{n.}    &     $f(x)$      &    $x_1$       &    $y_1$       &     $f^{\prime}(x)$     &     $m$     &  \vphantom{\resizebox{!}{\ColHeight}{$|$}}  tangent line  \vphantom{\resizebox{!}{\ColHeight}{$|$}}  \\ ')
+		print(r' \hline ')
+		print(r' \hline ')
+	else:
+		print(r'\maxsizebox{\OutColWidthSml}{!}{   \textbf{', n+1, r'\hspace*{-.07in}.}    } &  \maxsizebox{\InColWidthMed}{!}{    $', latex(F[n]), r'$        }  & \maxsizebox{\OutColWidthSml}{!}{   $', latex(A[n]), r'$       } &  \maxsizebox{\OutColWidthSml}{!}{   $', latex(Y[n]), r'$       } & \maxsizebox{\InColWidthMed}{!}{     $', latex(D[n]), r'$      }  &  \maxsizebox{\OutColWidthSml}{!}{   $', latex(M[n]), r'$      } & \vphantom{\resizebox{!}{\ColHeight}{$|$}} \maxsizebox{\InColWidthBig}{!}{      $y=', latex(T[n]), r'$   } \vphantom{\resizebox{!}{\ColHeight}{$|$}} \\ ')
+		print(r' \hline ')
+
+print(r'\end{tabular} ')
+
+\end{sympycode}
+
+%python pythontex.py NumProbTangLine
+
+
+%%%%%%%%%%%%%%%%%%%End Page 4'
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
